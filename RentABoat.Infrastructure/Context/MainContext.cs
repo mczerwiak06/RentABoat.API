@@ -5,13 +5,14 @@ namespace RentABoat.Infrastructure.Context;
 
 public class MainContext : DbContext
 {
-    public DbSet<Boat> Boat { get; set; }
-    public DbSet<SailorAccount> SailorAccount { get; set; }
+
     
     public MainContext(DbContextOptions options) : base(options)
     {
         
     }
+    public DbSet<Boat> Boat { get; set; }
+    public DbSet<SailorAccount> SailorAccount { get; set; }
 
     public MainContext()
     {
@@ -22,11 +23,11 @@ public class MainContext : DbContext
         optionsBuilder.UseSqlite("DataSource=dbo.RentABoat.db");
     }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    /*protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Boat>()
             .HasOne(x => x.SailorAccount)
             .WithOne(x => x.Boat)
             .OnDelete(DeleteBehavior.Cascade);
-    }
+    }*/
 }
