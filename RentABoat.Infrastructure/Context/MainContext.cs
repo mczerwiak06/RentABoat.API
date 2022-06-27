@@ -23,11 +23,17 @@ public class MainContext : DbContext
         optionsBuilder.UseSqlite("DataSource=dbo.RentABoat.db");
     }
 
-    /*protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Boat>()
+        /*modelBuilder.Entity<Boat>()
             .HasOne(x => x.SailorAccount)
-            .WithOne(x => x.Boat)
+            .WithMany(x =>x.Id)
+            /*.WithOne(x => x.Boat)#1#
+            .OnDelete(DeleteBehavior.Cascade);*/
+        modelBuilder.Entity<SailorAccount>()
+            .HasOne(x => x.Boat)
+            .WithOne(x => x.SailorAccount)
+            .HasForeignKey<Boat>(x=>x.SailorAccountId)
             .OnDelete(DeleteBehavior.Cascade);
-    }*/
+    }
 }
