@@ -18,11 +18,8 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\RentABoat.Core\RentABoat.Core.csproj" />
       <ProjectReference Include="..\RentABoat.Infrastructure\RentABoat.Infrastructure.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Controllers" />
     </ItemGroup>
 
 </Project>
