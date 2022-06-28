@@ -13,27 +13,18 @@ public class BoatRepository : IBoatRepository
     {
         _mainContext = mainContext;
     }
-    
+
     public async Task<IEnumerable<Boat>> GetAllAsync()
     {
         var boats = await _mainContext.Boat.ToListAsync();
-        foreach (var boat in boats)
-        {
-            await _mainContext.Entry(boat).Reference(x => x.Harbour).LoadAsync();
-        }
-
         return boats;
     }
 
-    public async  Task<Boat> GetByIdAsync(int id)
+    public async Task<Boat> GetByIdAsync(int id)
     {
         var boat = await _mainContext.Boat.SingleOrDefaultAsync(x => x.Id == id);
         if (boat != null)
-        {
-            await _mainContext.Entry(boat).Reference(x => x.Harbour).LoadAsync();
             return boat;
-        }
-
         throw new EntityNotFoundException();
     }
 

@@ -4,5 +4,4 @@ namespace RentABoat.Infrastructure.Repository;
 
 public interface ISailorAccountRepository : IRepository<SailorAccount>
 {
-    
 }

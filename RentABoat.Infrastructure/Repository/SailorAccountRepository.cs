@@ -13,15 +13,10 @@ public class SailorAccountRepository : ISailorAccountRepository
     {
         _mainContext = mainContext;
     }
-    
+
     public async Task<IEnumerable<SailorAccount>> GetAllAsync()
     {
         var sailors = await _mainContext.SailorAccount.ToListAsync();
-        foreach (var sailor in sailors)
-        {
-            await _mainContext.Entry(sailor).Reference(x => x.Email).LoadAsync();
-        }
-
         return sailors;
     }
 
@@ -29,11 +24,8 @@ public class SailorAccountRepository : ISailorAccountRepository
     {
         var sailor = await _mainContext.SailorAccount.SingleOrDefaultAsync(x => x.Id == id);
         if (sailor != null)
-        {
-            await _mainContext.Entry(sailor).Reference(x => x.Email).LoadAsync();
             return sailor;
-        }
-
+        
         throw new EntityNotFoundException();
     }
 
@@ -41,10 +33,7 @@ public class SailorAccountRepository : ISailorAccountRepository
     {
         var sailorAccountToAdd = await _mainContext.SailorAccount.AnyAsync(x => x.Email == entity.Email);
 
-        if (sailorAccountToAdd)
-        {
-            throw new EntityAlreadyExistsException();
-        }
+        if (sailorAccountToAdd) throw new EntityAlreadyExistsException();
         entity.DateOfCreation = DateTime.UtcNow;
         await _mainContext.AddAsync(entity);
         await _mainContext.SaveChangesAsync();

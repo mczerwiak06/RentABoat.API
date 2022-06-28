@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using RentABoat.Core.DTO;
+﻿using RentABoat.Core.DTO;
 using RentABoat.Infrastructure.Entities;
 using RentABoat.Infrastructure.Repository;
 
@@ -14,7 +13,7 @@ public class BoatService : IBoatService
         _boatRepository = boatRepository;
     }
 
-    public async Task<IEnumerable<BoatBasicInformationResponseDto>> GetAllApartmentBasicInformationAsync()
+    public async Task<IEnumerable<BoatBasicInformationResponseDto>> GetAllBoatsBasicInformationAsync()
     {
         var boats = await _boatRepository.GetAllAsync();
 
@@ -44,22 +43,20 @@ public class BoatService : IBoatService
         });
     }
 
-    public async Task<BoatBasicInformationResponseDto> GetSailBoatsAsync()
+    public async Task<IEnumerable<BoatBasicInformationResponseDto>> GetBoatsAsync(string type)
     {
-        throw new NotImplementedException();
-        /*var boats = await _boatRepository.GetAllAsync();
+        var boats = await _boatRepository.GetAllAsync();
+        var boatsToSearch = boats.Where(x => x.Type == type);
 
-        var motorboats = boats.Where(x => x.Type == "sailboat").ToList();
-
-        if (motorboats is null) return null;
-        return motorboats;
-        /*return motorboats.Select(x => new BoatBasicInformationResponseDto(
+        return boatsToSearch.Select(x => new BoatBasicInformationResponseDto(
             x.Type,
             x.Length,
             x.NumberOfBerths,
             x.YearOfBuilt,
             x.Model,
             x.Harbour,
-            x.IsAvailable));#1#*/
+            x.IsAvailable));
+        
+        
     }
 }

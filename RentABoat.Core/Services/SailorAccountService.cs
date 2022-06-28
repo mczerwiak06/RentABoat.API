@@ -12,6 +12,7 @@ public class SailorAccountService : ISailorAccountService
     {
         _accountRepository = accountRepository;
     }
+
     public async Task<IEnumerable<SailorAccountBasicInformationResponseDto>> GetAllSailorsBasicInformationAsync()
     {
         var sailors = await _accountRepository.GetAllAsync();
