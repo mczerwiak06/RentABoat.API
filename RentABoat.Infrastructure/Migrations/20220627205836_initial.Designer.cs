@@ -11,8 +11,8 @@ using RentABoat.Infrastructure.Context;
 namespace RentABoat.Infrastructure.Migrations
 {
     [DbContext(typeof(MainContext))]
-    [Migration("20220627182619_initial1")]
-    partial class initial1
+    [Migration("20220627205836_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
