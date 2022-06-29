@@ -8,4 +8,5 @@ public interface IBoatService
     Task<IEnumerable<BoatBasicInformationResponseDto>> GetBoatsAsync(string type);
 
     Task AddNewBoatAsync(BoatCreationRequestDto dto);
+    Task AddBoatToSailorAccount(int boatToAddId, int sailorAccountId);
 }

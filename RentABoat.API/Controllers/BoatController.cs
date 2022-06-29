@@ -49,4 +49,11 @@ public class BoatController : ControllerBase
         await _boatRepository.DeleteByIdAsync(id);
         return NoContent();
     }
+
+    [HttpPut ("Rent/{boatToAddId}/{sailorToAddId}")]
+    public async Task<IActionResult> RentBoat(int boatToAddId, int sailorToAddId)
+    {
+        await _boatService.AddBoatToSailorAccount(boatToAddId, sailorToAddId);
+        return NoContent();
+    }
 }

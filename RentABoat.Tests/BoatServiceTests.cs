@@ -41,7 +41,7 @@ public class BoatServiceTests
         var boatRepositoryMock = new Moq.Mock<IBoatRepository>();
         boatRepositoryMock.Setup(x => x.GetAllAsync()).ReturnsAsync(boats);
 
-        var sut = new BoatService(boatRepositoryMock.Object);
+        var sut = new BoatService(boatRepositoryMock.Object, Mock.Of<ISailorAccountRepository>());
         var result = await sut.GetBoatsAsync("Sailboat");
 
         result.Should().NotBeNull();
@@ -77,7 +77,7 @@ public class BoatServiceTests
         var boatRepositoryMock = new Moq.Mock<IBoatRepository>();
         boatRepositoryMock.Setup(x => x.GetAllAsync()).ReturnsAsync(boats);
 
-        var sut = new BoatService(boatRepositoryMock.Object);
+        var sut = new BoatService(boatRepositoryMock.Object, Mock.Of<ISailorAccountRepository>());
         var result = await sut.GetAllBoatsBasicInformationAsync();
         result.Should().NotBeNull();
         result.Count().Should().Be(2);

@@ -1,5 +1,6 @@
 ﻿using RentABoat.Core.DTO;
 using RentABoat.Infrastructure.Entities;
+using RentABoat.Infrastructure.Exceptions;
 using RentABoat.Infrastructure.Repository;
 
 namespace RentABoat.Core.Services;
@@ -7,10 +8,12 @@ namespace RentABoat.Core.Services;
 public class BoatService : IBoatService
 {
     private readonly IBoatRepository _boatRepository;
+    private readonly ISailorAccountRepository _sailorAccountRepository;
 
-    public BoatService(IBoatRepository boatRepository)
+    public BoatService(IBoatRepository boatRepository, ISailorAccountRepository sailorAccountRepository)
     {
         _boatRepository = boatRepository;
+        _sailorAccountRepository = sailorAccountRepository;
     }
 
     public async Task<IEnumerable<BoatBasicInformationResponseDto>> GetAllBoatsBasicInformationAsync()
@@ -58,5 +61,22 @@ public class BoatService : IBoatService
             x.IsAvailable));
         
         
+    }
+
+    public async Task AddBoatToSailorAccount(int boatToRentId, int sailorAccountId)
+    {
+        var sailor = await _sailorAccountRepository.GetByIdAsync(sailorAccountId);
+        var boatTaAdd = await _boatRepository.GetByIdAsync(boatToRentId);
+        if (boatTaAdd.IsAvailable && sailor.BoatId == null)
+        {
+            sailor.BoatId = boatTaAdd.Id;
+            boatTaAdd.SailorAccountId = sailor.Id;
+            boatTaAdd.IsAvailable = false;
+            await _boatRepository.UpdateAsync(boatTaAdd);
+            await _sailorAccountRepository.UpdateAsync(sailor);
+        }
+
+        throw new EntityNotFoundException();
+
     }
 }

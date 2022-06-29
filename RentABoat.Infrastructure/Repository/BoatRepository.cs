@@ -51,6 +51,7 @@ public class BoatRepository : IBoatRepository
             boatToUpdate.Model = entity.Model;
             boatToUpdate.Harbour = entity.Harbour;
             boatToUpdate.IsAvailable = entity.IsAvailable;
+            boatToUpdate.SailorAccountId = entity.SailorAccountId;
             boatToUpdate.DateOfUpdate = DateTime.UtcNow;
 
             await _mainContext.SaveChangesAsync();
@@ -67,7 +68,11 @@ public class BoatRepository : IBoatRepository
             _mainContext.Boat.Remove(boatToDelete);
             await _mainContext.SaveChangesAsync();
         }
-        _logger.LogError("Boat with provided id: {BoatId} doesn't exist", id);
-        throw new EntityNotFoundException();
+        else
+        {
+            _logger.LogError("Boat with provided id: {BoatId} doesn't exist", id);
+            throw new EntityNotFoundException();
+        }
+
     }
 }

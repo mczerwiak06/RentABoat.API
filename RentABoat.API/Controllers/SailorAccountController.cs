@@ -45,11 +45,4 @@ public class SailorAccountController : ControllerBase
         await _sailorAccountRepository.DeleteByIdAsync(id);
         return NoContent();
     }
-
-    [HttpPut("Update/{id}")]
-    public async Task<IActionResult> UpdateSailorAccount(int id, SailorAccount sailorAccount)
-    {
-        await _sailorAccountRepository.UpdateAsync(sailorAccount);
-        return NoContent();
-    }
 }

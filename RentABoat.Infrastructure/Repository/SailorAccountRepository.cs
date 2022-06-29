@@ -56,7 +56,17 @@ public class SailorAccountRepository : ISailorAccountRepository
             sailorToUpdate.City = entity.City;
             sailorToUpdate.ZipCode = entity.ZipCode;
             sailorToUpdate.BuildingNumber = entity.BuildingNumber;
+            sailorToUpdate.BoatId = entity.BoatId;
             sailorToUpdate.DateOfUpdate = DateTime.UtcNow;
+
+            sailorToUpdate.Boat.Type = entity.Boat.Type;
+            sailorToUpdate.Boat.Length = entity.Boat.Length;
+            sailorToUpdate.Boat.NumberOfBerths = entity.Boat.NumberOfBerths;
+            sailorToUpdate.Boat.YearOfBuilt = entity.Boat.YearOfBuilt;
+            sailorToUpdate.Boat.Model = entity.Boat.Model;
+            sailorToUpdate.Boat.Harbour = entity.Boat.Harbour;
+            sailorToUpdate.Boat.IsAvailable = entity.Boat.IsAvailable;
+            sailorToUpdate.Boat.SailorAccount = entity.Boat.SailorAccount;
 
             await _mainContext.SaveChangesAsync();
         }
