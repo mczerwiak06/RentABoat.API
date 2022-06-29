@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using RentABoat.Infrastructure.Context;
 using RentABoat.Infrastructure.Entities;
 using RentABoat.Infrastructure.Exceptions;
@@ -8,10 +9,12 @@ namespace RentABoat.Infrastructure.Repository;
 public class SailorAccountRepository : ISailorAccountRepository
 {
     private readonly MainContext _mainContext;
+    private readonly ILogger<ISailorAccountRepository> _logger;
 
-    public SailorAccountRepository(MainContext mainContext)
+    public SailorAccountRepository(MainContext mainContext, ILogger<SailorAccountRepository> logger)
     {
         _mainContext = mainContext;
+        _logger = logger;
     }
 
     public async Task<IEnumerable<SailorAccount>> GetAllAsync()
@@ -26,6 +29,7 @@ public class SailorAccountRepository : ISailorAccountRepository
         if (sailor != null)
             return sailor;
         
+        _logger.LogError("SailorAccount with provided id: {SailorAccountID} doesn't exist.", id);
         throw new EntityNotFoundException();
     }
 
@@ -56,7 +60,7 @@ public class SailorAccountRepository : ISailorAccountRepository
 
             await _mainContext.SaveChangesAsync();
         }
-
+        _logger.LogError("SailorAccount with provided id: {SailorAccountID} doesn't exist.", entity.Id);
         throw new EntityNotFoundException();
     }
 
@@ -68,7 +72,7 @@ public class SailorAccountRepository : ISailorAccountRepository
             _mainContext.SailorAccount.Remove(sailorAccountToDelete);
             await _mainContext.SaveChangesAsync();
         }
-
+        _logger.LogError("SailorAccount with provided id: {SailorAccountID} doesn't exist.", id);
         throw new EntityNotFoundException();
     }
 }

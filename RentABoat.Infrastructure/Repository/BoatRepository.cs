@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using RentABoat.Infrastructure.Context;
 using RentABoat.Infrastructure.Entities;
 using RentABoat.Infrastructure.Exceptions;
@@ -8,10 +9,12 @@ namespace RentABoat.Infrastructure.Repository;
 public class BoatRepository : IBoatRepository
 {
     private readonly MainContext _mainContext;
+    private readonly ILogger<IBoatRepository> _logger;
 
-    public BoatRepository(MainContext mainContext)
+    public BoatRepository(MainContext mainContext, ILogger<IBoatRepository> logger)
     {
         _mainContext = mainContext;
+        _logger = logger;
     }
 
     public async Task<IEnumerable<Boat>> GetAllAsync()
@@ -25,6 +28,7 @@ public class BoatRepository : IBoatRepository
         var boat = await _mainContext.Boat.SingleOrDefaultAsync(x => x.Id == id);
         if (boat != null)
             return boat;
+        _logger.LogError("Boat with provided id: {BoatId} doesn't exist", id);
         throw new EntityNotFoundException();
     }
 
@@ -63,7 +67,7 @@ public class BoatRepository : IBoatRepository
             _mainContext.Boat.Remove(boatToDelete);
             await _mainContext.SaveChangesAsync();
         }
-
+        _logger.LogError("Boat with provided id: {BoatId} doesn't exist", id);
         throw new EntityNotFoundException();
     }
 }
