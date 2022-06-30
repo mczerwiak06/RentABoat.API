@@ -1,5 +1,5 @@
 ﻿namespace RentABoat.Infrastructure.Exceptions;
 
-public class EntityNotFoundException : Exception
+public class BoatOrSailorOccupiedException : Exception
 {
 }

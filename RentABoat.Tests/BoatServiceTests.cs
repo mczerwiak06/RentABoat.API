@@ -25,7 +25,7 @@ public class BoatServiceTests
                 YearOfBuilt = 2019,
                 Model = "SeaBreeze 550",
                 Harbour = "Sydney",
-                IsAvailable = true,
+                IsAvailable = true
             },
             new()
             {
@@ -35,10 +35,10 @@ public class BoatServiceTests
                 YearOfBuilt = 2020,
                 Model = "Bavaria 46 Cruiser",
                 Harbour = "Biograd",
-                IsAvailable = true,
+                IsAvailable = true
             }
         };
-        var boatRepositoryMock = new Moq.Mock<IBoatRepository>();
+        var boatRepositoryMock = new Mock<IBoatRepository>();
         boatRepositoryMock.Setup(x => x.GetAllAsync()).ReturnsAsync(boats);
 
         var sut = new BoatService(boatRepositoryMock.Object, Mock.Of<ISailorAccountRepository>());
@@ -61,7 +61,7 @@ public class BoatServiceTests
                 YearOfBuilt = 2019,
                 Model = "SeaBreeze 550",
                 Harbour = "Sydney",
-                IsAvailable = true,
+                IsAvailable = true
             },
             new()
             {
@@ -71,10 +71,10 @@ public class BoatServiceTests
                 YearOfBuilt = 2020,
                 Model = "Bavaria 46 Cruiser",
                 Harbour = "Biograd",
-                IsAvailable = true,
+                IsAvailable = true
             }
         };
-        var boatRepositoryMock = new Moq.Mock<IBoatRepository>();
+        var boatRepositoryMock = new Mock<IBoatRepository>();
         boatRepositoryMock.Setup(x => x.GetAllAsync()).ReturnsAsync(boats);
 
         var sut = new BoatService(boatRepositoryMock.Object, Mock.Of<ISailorAccountRepository>());

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RentABoat.Core.DTO;
 using RentABoat.Core.Services;
-using RentABoat.Infrastructure.Entities;
 using RentABoat.Infrastructure.Repository;
 
 namespace RentABoat.API.Controllers;

@@ -26,7 +26,7 @@ public class SailorAccountServiceTests
                 Street = "Laskowa",
                 City = "Gdynia",
                 ZipCode = "81-103",
-                BuildingNumber = 24,
+                BuildingNumber = 24
             },
             new()
             {
@@ -37,7 +37,7 @@ public class SailorAccountServiceTests
                 Street = "Polna",
                 City = "Gdynia",
                 ZipCode = "81-103",
-                BuildingNumber = 28,
+                BuildingNumber = 28
             },
             new()
             {
@@ -48,10 +48,10 @@ public class SailorAccountServiceTests
                 Street = "Kwiatowa",
                 City = "Gdynia",
                 ZipCode = "81-103",
-                BuildingNumber = 212,
-            },
+                BuildingNumber = 212
+            }
         };
-        var sailorAccountRepositoryMock = new Moq.Mock<ISailorAccountRepository>();
+        var sailorAccountRepositoryMock = new Mock<ISailorAccountRepository>();
         sailorAccountRepositoryMock.Setup(x => x.GetAllAsync()).ReturnsAsync(sailors);
 
         var sut = new SailorAccountService(sailorAccountRepositoryMock.Object);

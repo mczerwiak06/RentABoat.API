@@ -59,24 +59,17 @@ public class BoatService : IBoatService
             x.Model,
             x.Harbour,
             x.IsAvailable));
-        
-        
     }
 
     public async Task AddBoatToSailorAccount(int boatToRentId, int sailorAccountId)
     {
         var sailor = await _sailorAccountRepository.GetByIdAsync(sailorAccountId);
         var boatTaAdd = await _boatRepository.GetByIdAsync(boatToRentId);
-        if (boatTaAdd.IsAvailable && sailor.BoatId == null)
-        {
-            sailor.BoatId = boatTaAdd.Id;
-            boatTaAdd.SailorAccountId = sailor.Id;
-            boatTaAdd.IsAvailable = false;
-            await _boatRepository.UpdateAsync(boatTaAdd);
-            await _sailorAccountRepository.UpdateAsync(sailor);
-        }
-
-        throw new EntityNotFoundException();
-
+        if (boatTaAdd.IsAvailable == false || sailor.BoatId != null) throw new BoatOrSailorOccupiedException();
+        sailor.BoatId = boatTaAdd.Id;
+        boatTaAdd.SailorAccountId = sailor.Id;
+        boatTaAdd.IsAvailable = false;
+        await _boatRepository.UpdateAsync(boatTaAdd);
+        await _sailorAccountRepository.UpdateAsync(sailor);
     }
 }

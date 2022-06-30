@@ -8,8 +8,8 @@ namespace RentABoat.Infrastructure.Repository;
 
 public class BoatRepository : IBoatRepository
 {
-    private readonly MainContext _mainContext;
     private readonly ILogger<IBoatRepository> _logger;
+    private readonly MainContext _mainContext;
 
     public BoatRepository(MainContext mainContext, ILogger<IBoatRepository> logger)
     {
@@ -42,37 +42,30 @@ public class BoatRepository : IBoatRepository
     public async Task UpdateAsync(Boat entity)
     {
         var boatToUpdate = await _mainContext.Boat.SingleOrDefaultAsync(x => x.Id == entity.Id);
-        if (boatToUpdate != null)
-        {
-            boatToUpdate.Type = entity.Type;
-            boatToUpdate.Length = entity.Length;
-            boatToUpdate.NumberOfBerths = entity.NumberOfBerths;
-            boatToUpdate.YearOfBuilt = entity.YearOfBuilt;
-            boatToUpdate.Model = entity.Model;
-            boatToUpdate.Harbour = entity.Harbour;
-            boatToUpdate.IsAvailable = entity.IsAvailable;
-            boatToUpdate.SailorAccountId = entity.SailorAccountId;
-            boatToUpdate.DateOfUpdate = DateTime.UtcNow;
+        if (boatToUpdate == null) throw new EntityNotFoundException();
+        boatToUpdate.Type = entity.Type;
+        boatToUpdate.Length = entity.Length;
+        boatToUpdate.NumberOfBerths = entity.NumberOfBerths;
+        boatToUpdate.YearOfBuilt = entity.YearOfBuilt;
+        boatToUpdate.Model = entity.Model;
+        boatToUpdate.Harbour = entity.Harbour;
+        boatToUpdate.IsAvailable = entity.IsAvailable;
+        boatToUpdate.SailorAccountId = entity.SailorAccountId;
+        boatToUpdate.DateOfUpdate = DateTime.UtcNow;
 
-            await _mainContext.SaveChangesAsync();
-        }
-
-        throw new EntityNotFoundException();
+        await _mainContext.SaveChangesAsync();
     }
 
     public async Task DeleteByIdAsync(int id)
     {
         var boatToDelete = await _mainContext.Boat.SingleOrDefaultAsync(x => x.Id == id);
-        if (boatToDelete != null)
-        {
-            _mainContext.Boat.Remove(boatToDelete);
-            await _mainContext.SaveChangesAsync();
-        }
-        else
+        if (boatToDelete == null)
         {
             _logger.LogError("Boat with provided id: {BoatId} doesn't exist", id);
             throw new EntityNotFoundException();
         }
 
+        _mainContext.Boat.Remove(boatToDelete);
+        await _mainContext.SaveChangesAsync();
     }
 }

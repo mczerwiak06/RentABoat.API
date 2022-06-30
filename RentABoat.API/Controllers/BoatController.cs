@@ -50,7 +50,7 @@ public class BoatController : ControllerBase
         return NoContent();
     }
 
-    [HttpPut ("Rent/{boatToAddId}/{sailorToAddId}")]
+    [HttpPut("Rent/{boatToAddId}/{sailorToAddId}")]
     public async Task<IActionResult> RentBoat(int boatToAddId, int sailorToAddId)
     {
         await _boatService.AddBoatToSailorAccount(boatToAddId, sailorToAddId);

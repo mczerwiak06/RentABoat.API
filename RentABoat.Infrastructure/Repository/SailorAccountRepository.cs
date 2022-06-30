@@ -8,8 +8,8 @@ namespace RentABoat.Infrastructure.Repository;
 
 public class SailorAccountRepository : ISailorAccountRepository
 {
-    private readonly MainContext _mainContext;
     private readonly ILogger<ISailorAccountRepository> _logger;
+    private readonly MainContext _mainContext;
 
     public SailorAccountRepository(MainContext mainContext, ILogger<SailorAccountRepository> logger)
     {
@@ -28,7 +28,7 @@ public class SailorAccountRepository : ISailorAccountRepository
         var sailor = await _mainContext.SailorAccount.SingleOrDefaultAsync(x => x.Id == id);
         if (sailor != null)
             return sailor;
-        
+
         _logger.LogError("SailorAccount with provided id: {SailorAccountID} doesn't exist.", id);
         throw new EntityNotFoundException();
     }
@@ -46,43 +46,45 @@ public class SailorAccountRepository : ISailorAccountRepository
     public async Task UpdateAsync(SailorAccount entity)
     {
         var sailorToUpdate = await _mainContext.SailorAccount.SingleOrDefaultAsync(x => x.Id == entity.Id);
-        if (sailorToUpdate != null)
+        if (sailorToUpdate == null)
         {
-            sailorToUpdate.FirstName = entity.FirstName;
-            sailorToUpdate.LastName = entity.LastName;
-            sailorToUpdate.Email = entity.Email;
-            sailorToUpdate.PhoneNumber = entity.PhoneNumber;
-            sailorToUpdate.Street = entity.Street;
-            sailorToUpdate.City = entity.City;
-            sailorToUpdate.ZipCode = entity.ZipCode;
-            sailorToUpdate.BuildingNumber = entity.BuildingNumber;
-            sailorToUpdate.BoatId = entity.BoatId;
-            sailorToUpdate.DateOfUpdate = DateTime.UtcNow;
-
-            sailorToUpdate.Boat.Type = entity.Boat.Type;
-            sailorToUpdate.Boat.Length = entity.Boat.Length;
-            sailorToUpdate.Boat.NumberOfBerths = entity.Boat.NumberOfBerths;
-            sailorToUpdate.Boat.YearOfBuilt = entity.Boat.YearOfBuilt;
-            sailorToUpdate.Boat.Model = entity.Boat.Model;
-            sailorToUpdate.Boat.Harbour = entity.Boat.Harbour;
-            sailorToUpdate.Boat.IsAvailable = entity.Boat.IsAvailable;
-            sailorToUpdate.Boat.SailorAccount = entity.Boat.SailorAccount;
-
-            await _mainContext.SaveChangesAsync();
+            _logger.LogError("SailorAccount with provided id: {SailorAccountID} doesn't exist.", entity.Id);
+            throw new EntityNotFoundException();
         }
-        _logger.LogError("SailorAccount with provided id: {SailorAccountID} doesn't exist.", entity.Id);
-        throw new EntityNotFoundException();
+
+        sailorToUpdate.FirstName = entity.FirstName;
+        sailorToUpdate.LastName = entity.LastName;
+        sailorToUpdate.Email = entity.Email;
+        sailorToUpdate.PhoneNumber = entity.PhoneNumber;
+        sailorToUpdate.Street = entity.Street;
+        sailorToUpdate.City = entity.City;
+        sailorToUpdate.ZipCode = entity.ZipCode;
+        sailorToUpdate.BuildingNumber = entity.BuildingNumber;
+        sailorToUpdate.BoatId = entity.BoatId;
+        sailorToUpdate.DateOfUpdate = DateTime.UtcNow;
+
+        sailorToUpdate.Boat.Type = entity.Boat.Type;
+        sailorToUpdate.Boat.Length = entity.Boat.Length;
+        sailorToUpdate.Boat.NumberOfBerths = entity.Boat.NumberOfBerths;
+        sailorToUpdate.Boat.YearOfBuilt = entity.Boat.YearOfBuilt;
+        sailorToUpdate.Boat.Model = entity.Boat.Model;
+        sailorToUpdate.Boat.Harbour = entity.Boat.Harbour;
+        sailorToUpdate.Boat.IsAvailable = entity.Boat.IsAvailable;
+        sailorToUpdate.Boat.SailorAccount = entity.Boat.SailorAccount;
+
+        await _mainContext.SaveChangesAsync();
     }
 
     public async Task DeleteByIdAsync(int id)
     {
         var sailorAccountToDelete = await _mainContext.SailorAccount.SingleOrDefaultAsync(x => x.Id == id);
-        if (sailorAccountToDelete != null)
+        if (sailorAccountToDelete == null)
         {
-            _mainContext.SailorAccount.Remove(sailorAccountToDelete);
-            await _mainContext.SaveChangesAsync();
+            _logger.LogError("SailorAccount with provided id: {SailorAccountID} doesn't exist.", id);
+            throw new EntityNotFoundException();
         }
-        _logger.LogError("SailorAccount with provided id: {SailorAccountID} doesn't exist.", id);
-        throw new EntityNotFoundException();
+
+        _mainContext.SailorAccount.Remove(sailorAccountToDelete);
+        await _mainContext.SaveChangesAsync();
     }
 }
