@@ -6,4 +6,6 @@ Projekt realizowany w rammach zajęć .NET Serwis do zarządzania bazą jachtów
 
 ∙ tworzenie i usuwanie konta żeglarza
 
+∙ wyszukiwanie i wyświetlanie konta żeglarza
+
 ∙ przypisanie konta żeglarza do jachtu
